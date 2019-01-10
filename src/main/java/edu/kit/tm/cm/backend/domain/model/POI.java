@@ -1,11 +1,9 @@
 package edu.kit.tm.cm.backend.domain.model;
 
 import edu.kit.tm.cm.msutils.ddd.EntityBase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 
 @Entity
@@ -26,6 +24,9 @@ public class POI  extends EntityBase {
 
     private int poiId;
 
+    private int campusId;
+
+
 
     private int floorId;
 
@@ -34,6 +35,8 @@ public class POI  extends EntityBase {
 
 
     private String buildingName;
+
+    private String floorName;
 
 
     private String description;
@@ -47,4 +50,105 @@ public class POI  extends EntityBase {
     //About the kind of poi it is. Office, Hallway, toilets. We could add Beacons to poi and make "Beacon" a name.
 
     private ArrayList<String> names;
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public int getPoiId() {
+        return poiId;
+    }
+
+    public void setPoiId(int poiId) {
+        this.poiId = poiId;
+    }
+
+    public int getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(int floorId) {
+        this.floorId = floorId;
+    }
+
+    public int getzLevel() {
+        return zLevel;
+    }
+
+    public void setzLevel(int zLevel) {
+        this.zLevel = zLevel;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<double[]> getDoor() {
+        return door;
+    }
+
+    public void setDoor(ArrayList<double[]> door) {
+        this.door = door;
+    }
+
+    public ArrayList<double[]> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(ArrayList<double[]> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    public void setNames(ArrayList<String> names) {
+        this.names = names;
+    }
+
+    public int getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(int campusId) {
+        this.campusId = campusId;
+    }
+
+    public String getFloorName() {
+        return floorName;
+    }
+
+    public void setFloorName(String floorName) {
+        this.floorName = floorName;
+    }
 }

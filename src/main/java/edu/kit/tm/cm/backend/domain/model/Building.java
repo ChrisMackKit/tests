@@ -4,29 +4,106 @@ import edu.kit.tm.cm.msutils.ddd.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 
+
 @Entity
+@AllArgsConstructor
+@Builder
 public class Building  extends EntityBase {
 
+
     @Getter
+    @Setter
     private Long id;
-
-
+    @Getter
+    @Setter
     private String name;
-
-
+    @Getter
+    @Setter
     private int campusId;
-
+    @Getter
+    @Setter
     private ArrayList<Floor> floors;
-
-
+    @Getter
+    @Setter
+    private ArrayList<POI> pois;
+    @Getter
+    @Setter
     private ArrayList<double[]> coordinates;
-
+    @Getter
+    @Setter
     private double[] systemZero;
-/*
+    private String geometryType;
+
+    public Building() {
+
+    }
+
+    public String getGeometryType() {
+        return this.geometryType;
+    }
+
+    public void setGeometryType(String type) {
+        this.geometryType = type;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(int campusId) {
+        this.campusId = campusId;
+    }
+
+    public ArrayList<Floor> getFloors() {
+        return floors;
+    }
+
+    public void setFloors(ArrayList<Floor> floors) {
+        this.floors = floors;
+    }
+
+    public ArrayList<POI> getPois() {
+        return pois;
+    }
+
+    public void setPois(ArrayList<POI> pois) {
+        this.pois = pois;
+    }
+
+    public ArrayList<double[]> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(ArrayList<double[]> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public double[] getSystemZero() {
+        return systemZero;
+    }
+
+    public void setSystemZero(double[] systemZero) {
+        this.systemZero = systemZero;
+    }
+
+    /*
     //Find point 0,0 for the Indoor Coordinate System
     public Coordinates findZero(ArrayList<Coordinates> coordinates) {
         systemZero = coordinates.get(0);
