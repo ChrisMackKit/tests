@@ -1,13 +1,9 @@
 package edu.kit.tm.cm.backend.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import edu.kit.tm.cm.msutils.ddd.EntityBase;
-import lombok.Setter;
+import lombok.Getter;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Entity;
 
 @Entity
 public class Beacon extends EntityBase {
@@ -15,33 +11,67 @@ public class Beacon extends EntityBase {
     @Getter
     private Long id;
 
-    private String title;
-
-    //Not sure what the difference between title and identifier is but the GeoJson from the examples had both
-
-    private String identifier;
-
-    //same with poiId and Id
-
     private int poiId;
-
 
     private int floorId;
 
+    private Long buildingId;
 
-    private int zLevel;
+    private String name;
 
+    private double[] position = new double[2];
 
-    private String buildingName;
+    private double rssi;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    private String description;
+    public int getPoiId() {
+        return poiId;
+    }
 
-    @Getter
-    @Setter
-    private double[] xy = new double[2];
+    public void setPoiId(int poiId) {
+        this.poiId = poiId;
+    }
 
-    //About the kind of poi it is. Office, Hallway, toilets. We could add Beacons to poi and make "Beacon" a name.
+    public int getFloorId() {
+        return floorId;
+    }
 
-    private ArrayList<String> names;
+    public void setFloorId(int floorId) {
+        this.floorId = floorId;
+    }
+
+    public Long getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Long buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double[] getPosition() {
+        return position;
+    }
+
+    public void setPosition(double[] position) {
+        this.position = position;
+    }
+
+    public double getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(double rssi) {
+        this.rssi = rssi;
+    }
 }

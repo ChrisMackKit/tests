@@ -4,6 +4,7 @@ import edu.kit.tm.cm.backend.application.controllers.Api.IndoorNavigationApi;
 import edu.kit.tm.cm.backend.application.dtos.BuildingMapper;
 import edu.kit.tm.cm.backend.application.dtos.PositionMapper;
 import edu.kit.tm.cm.backend.application.dtos.response.BuildingResponse;
+import edu.kit.tm.cm.backend.application.dtos.response.PositionResponse;
 import edu.kit.tm.cm.backend.application.services.IndoorNavigationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,11 +17,13 @@ import java.util.List;
 public class IndoorNavigationController implements IndoorNavigationApi {
     private final IndoorNavigationService indoorNavigationService;
     private final BuildingMapper buildingMapper;
+    private final PositionMapper positionMapper;
 
     @Autowired
-    public IndoorNavigationController(IndoorNavigationService indoorNavigationService, BuildingMapper buildingMapper) {
+    public IndoorNavigationController(IndoorNavigationService indoorNavigationService, BuildingMapper buildingMapper, PositionMapper positionMapper) {
         this.indoorNavigationService = indoorNavigationService;
         this.buildingMapper = buildingMapper;
+        this.positionMapper = positionMapper;
     }
     @Override
     public List<BuildingResponse> getBuildings() {
@@ -36,5 +39,10 @@ public class IndoorNavigationController implements IndoorNavigationApi {
     @Override
     public BuildingResponse getBuildingByBeaconID(Long id) {
         return  buildingMapper.toResponse(indoorNavigationService.getBuildingByBeaconID(id));
+    }
+
+    @Override
+    public PositionResponse getPositionByBeaconSignals(String beaconsSignals) {
+        return positionMapper.toResponse(indoorNavigationService.getPositionByBeaconSignals(beaconsSignals));
     }
 }

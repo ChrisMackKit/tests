@@ -2,9 +2,13 @@ package edu.kit.tm.cm.backend.application.services;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
-import edu.kit.tm.cm.backend.domain.model.Building;
-import edu.kit.tm.cm.backend.domain.model.Floor;
-import edu.kit.tm.cm.backend.domain.model.POI;
+import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
+import com.lemmingapex.trilateration.TrilaterationFunction;
+import edu.kit.tm.cm.backend.domain.model.*;
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -130,20 +134,6 @@ public class IndoorNavigationService {
             poi.setFloorId(properties.getInt("floorId"));
             poi.setFloorName(properties.getString("floorName"));
             poi.setzLevel(properties.getInt("zLevel"));
-            /*
-            *   "properties": {
-                "title": "022",
-                "id": 1,
-                "poiId": 1,
-                "identifier": "022",
-                "campusId": 1,
-                "floorId": 1,
-                "zLevel": 1,
-                "floorName": "EG",
-                "buildingName": "50.30.",
-                "description": null,
-              }
-            * */
 
             ArrayList<double[]> coordinates = new ArrayList<double[]>();
 
@@ -188,13 +178,6 @@ public class IndoorNavigationService {
 
         for (int i = 0; i < floorsJson.length(); i++) {
             JSONObject jsonObj = floorsJson.getJSONObject(i);
-            /*"properties": {
-                "id": 1,
-                "name": "EG",
-                "buildingId": 1,
-                "campusId": 1,
-                "z": 1
-            }*/
             JSONObject properties = jsonObj.getJSONObject("properties");
             Floor floor = new Floor();
             floor.setId(properties.getLong("id"));
@@ -242,6 +225,71 @@ public class IndoorNavigationService {
     }
 
 
+    public Position getPositionByBeaconSignals(String beaconsSignals) {
+        Position response = new Position();
+        JSONObject beaconSignals = new JSONObject(beaconsSignals);
+        ArrayList<Beacon> beacons = extractBeaconsFromJSON(beaconSignals);
+        ArrayList<double[]> beaconPositions = new ArrayList<>();
+        ArrayList<Double> rssiValues = new ArrayList<Double>();
+        for (int i = 0; i < beacons.size(); i++) {
+            Beacon beacon = beacons.get(i);
+            beaconPositions.add(beacon.getPosition());
+            rssiValues.add(beacon.getRssi());
+        }
+        double[][] positions = new double[30][]; /*= new double[][] { { 4.0, 5.0 }, { 10.0, 4.5 }, { 8, 10.0 }}*/
+        ;
+        double[] distances = new double[30]; /*= new double[] { 5.0, 3.0, 3.0 }*/
+        ;
+
+        for (int i = 0; i < beacons.size(); i++) {
+            positions[i] = beaconPositions.get(i);
+            distances[i] = rssiValues.get(i);
+        }
+
+        NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
+        LeastSquaresOptimizer.Optimum optimum = solver.solve();
+
+        // the answer
+        double[] centroid = optimum.getPoint().toArray();
+
+        response.setCoordinates(centroid);
+        for (int i = 0; i < centroid.length; i++) {
+            System.out.println(centroid[i]);
+        }
+
+        // error and geometry information; may throw SingularMatrixException depending the threshold argument provided
+        RealVector standardDeviation = optimum.getSigma(0);
+        RealMatrix covarianceMatrix = optimum.getCovariances(0);
 
 
+        return response;
+    }
+
+    private ArrayList<Beacon> extractBeaconsFromJSON(JSONObject beaconSignals) {
+        //extract beacons signals and names from the JSON
+        //search Beacons by their names
+        //add the rssi values to beacons
+        //classing the beacons in their rangeClasses
+        // 0 - 40 klasse 1
+        // 40 -70 klasse 2
+        // 70 - 100 klasse 3
+        // return them as List of Beacons
+        return null;
+    }
+
+    private double getDistance(int rssi) {
+        int txPower = -62; //hard coded power value. Usually ranges between -59 to -65
+
+        if (rssi == 0) {
+            return -1.0;
+        }
+
+        var ratio = rssi * 1.0 / txPower;
+        if (ratio < 1.0) {
+            return Math.pow(ratio, 10);
+        } else {
+            double distance = (0.89976) * Math.pow(ratio, 7.7095) + 0.111;
+            return distance;
+        }
+    }
 }
