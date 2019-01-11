@@ -1,0 +1,27 @@
+[
+  {
+    "id": "A0:E6:F8:5A:C7:BC",
+    "name": "B-sdiAI7",
+    "rssi": -64
+  },
+  {
+    "id": "B0:B4:48:E9:46:85",
+    "name": "B-20.21_Lobby",
+    "rssi": -75
+  },
+  {
+    "id": "A0:E6:F8:5A:C7:CB",
+    "name": "B-00gAxI",
+    "rssi": -82
+  },
+  {
+    "id": "A0:E6:F8:77:9E:35",
+    "name": "B-o1P96L (W3)",
+    "rssi": -91
+  },
+  {
+    "id": "A0:E6:F8:77:9C:43",
+    "name": "B-YckkeQ",
+    "rssi": -67
+  }
+]

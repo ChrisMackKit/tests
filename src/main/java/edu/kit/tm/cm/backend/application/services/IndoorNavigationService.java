@@ -70,7 +70,7 @@ public class IndoorNavigationService {
             JSONObject json = (JSONObject) array.get(i);
             list.add(convertToBuilding(json.toString()));
         }
-        return new ArrayList<Building>();
+        return list;
     }
 
     private Building convertToBuilding(String text) {
@@ -100,7 +100,8 @@ public class IndoorNavigationService {
         JSONObject buildingProperties = building.getJSONObject("properties");
         JSONObject buildingGeometry = building.getJSONObject("geometry");
         result.setGeometryType(buildingGeometry.getString("type"));
-        JSONArray coordinatesArray = buildingGeometry.getJSONArray("coordinates");
+        JSONArray coordinatesArray2 = buildingGeometry.getJSONArray("coordinates");
+        JSONArray coordinatesArray = coordinatesArray2.getJSONArray(0);
         for (int i = 0; i < coordinatesArray.length(); i++) {
             JSONArray jsonArray = (JSONArray) coordinatesArray.get(i);
             double[] tr = {jsonArray.getDouble(0), jsonArray.getDouble(1)};
@@ -236,15 +237,18 @@ public class IndoorNavigationService {
             beaconPositions.add(beacon.getPosition());
             rssiValues.add(beacon.getRssi());
         }
-        double[][] positions = new double[30][]; /*= new double[][] { { 4.0, 5.0 }, { 10.0, 4.5 }, { 8, 10.0 }}*/
-        ;
-        double[] distances = new double[30]; /*= new double[] { 5.0, 3.0, 3.0 }*/
-        ;
+        double[][] positions = new double[30][];
+
+        double[] distances = new double[30];
+
 
         for (int i = 0; i < beacons.size(); i++) {
             positions[i] = beaconPositions.get(i);
             distances[i] = rssiValues.get(i);
         }
+
+        positions = new double[][]{{4.0, 5.0}, {10.0, 4.5}, {8, 10.0}};
+        distances = new double[]{5.0, 3.0, 3.0};
 
         NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
         LeastSquaresOptimizer.Optimum optimum = solver.solve();

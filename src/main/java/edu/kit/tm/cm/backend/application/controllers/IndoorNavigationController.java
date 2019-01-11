@@ -43,6 +43,7 @@ public class IndoorNavigationController implements IndoorNavigationApi {
 
     @Override
     public PositionResponse getPositionByBeaconSignals(String beaconsSignals) {
+
         return positionMapper.toResponse(indoorNavigationService.getPositionByBeaconSignals(beaconsSignals));
     }
 }
