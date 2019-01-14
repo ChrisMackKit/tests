@@ -36,6 +36,8 @@ public class IndoorNavigationController implements IndoorNavigationApi {
         return  buildingMapper.toResponse(indoorNavigationService.getBuildingByID(id));
     }
 
+
+    //BeaconID should be String, if it is the title
     @Override
     public BuildingResponse getBuildingByBeaconID(Long id) {
         return  buildingMapper.toResponse(indoorNavigationService.getBuildingByBeaconID(id));

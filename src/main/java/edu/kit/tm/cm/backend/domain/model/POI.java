@@ -127,7 +127,9 @@ public class POI  extends EntityBase {
     public void setCoordinates(ArrayList<double[]> coordinates) {
         this.coordinates = coordinates;
     }
-
+    //public void setCoordinates(ArrayList<double[]> coordinates, ArrayList<double[]> buildingCoordinates) {
+    //        this.coordinates = newList(coordinates, buildingCoordinates);
+    //    }
     public ArrayList<String> getNames() {
         return names;
     }
@@ -150,5 +152,15 @@ public class POI  extends EntityBase {
 
     public void setFloorName(String floorName) {
         this.floorName = floorName;
+    }
+
+    //uses function intoMeter for whole list. Returns the Coordinates in new format (Meter) as ArrayList<double[]>
+    public static  ArrayList<double[]> newList(ArrayList<double[]> coordinates, ArrayList<double[]> coordinatesBuilding) {
+        double[] zero = Building.findZero(coordinatesBuilding);
+        ArrayList<double[]> newCoords = new ArrayList<double[]>();
+        for (int j = 0; j < coordinates.size(); j++) {
+            newCoords.add(j, Building.intoMeter(coordinates.get(j), zero));
+        }
+        return newCoords;
     }
 }
