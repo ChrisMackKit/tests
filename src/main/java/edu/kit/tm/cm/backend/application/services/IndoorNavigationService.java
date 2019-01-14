@@ -278,6 +278,19 @@ public class IndoorNavigationService {
         // 40 -70 klasse 2
         // 70 - 100 klasse 3
         // return them as List of Beacons
+
+       /* ArrayList<Beacon> beacons = new ArrayList<Beacon>();
+        for (int i = 0; i < beaconSignals.length(); i++) {
+            JSONObject jsonObj = beaconSignals.getJSONObject(i);
+            Beacon beacon = new Beacon();
+            beacon.setId(jsonObj.getString("id"));  //id has to be String
+            beacon.setName(jsonObj.getString("name"));
+            beacon.setRssi(jsonObj.getLong("rssi"));
+            beacons.add(beacon);
+        }
+
+        return beacons;*/
+
         return null;
     }
 
